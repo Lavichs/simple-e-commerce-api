@@ -23,14 +23,14 @@ def products(client_sync):
         {
             "title": "Product 2",
             "description": "description",
-            "price": 100,
+            "price": 150,
             "stock_count": 100,
         },
         {
             "title": "Product 3",
             "description": "description",
             "price": 100,
-            "stock_count": 100,
+            "stock_count": 0,
         },
     ]
     products = []
