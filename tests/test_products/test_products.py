@@ -1,4 +1,6 @@
 import urllib.parse
+import uuid
+
 import pytest
 from contextlib import nullcontext as does_not_raise
 from src.schemas.products import SProduct
@@ -37,7 +39,16 @@ class TestProducts:
     def test_get_all_products(self, client_sync, products):
         response = client_sync.get(f"/api/v1/products?")
         assert response.status_code == 200
-        assert response.json().get('data') == products
+        assert response.json() == products
+
+    def test_get_by_id(self, client_sync, products):
+        response = client_sync.get(f"/api/v1/products/{products[0].get('id')}?")
+        assert response.status_code == 200
+        assert SProduct(**response.json())
+        response = client_sync.get(f"/api/v1/products/{uuid.uuid4()}?")
+        assert response.status_code == 404
+        assert response.json() == {'detail': 'Product not found'}
+
 
 
 # class TestPP:

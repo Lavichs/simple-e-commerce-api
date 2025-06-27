@@ -34,12 +34,9 @@ class SQLAlchemyRepository(AbstractRepository):
     async def add(self, data: dict):
         async with async_session_maker() as session:
             stmt = insert(self.model).values(**data).returning(self.model)
-            # stmt = insert(self.model).values(**data).returning(self.model.id)
             res = await session.execute(stmt)
             await session.commit()
             return res.scalar_one()
-            # return self.schema.model_validate(res)
-            # return res.scalar_one().to_read_model()
 
     async def get_all(self):
         async with async_session_maker() as session:
@@ -55,8 +52,7 @@ class SQLAlchemyRepository(AbstractRepository):
             model = result.scalar_one_or_none()
             if model is None:
                 return None
-            return model.to_read_model()
-            # return self.model.model_validate(post_model)
+            return self.schema.model_validate(model)
 
     async def update(self, id: uuid.UUID, data: dict):
         async with async_session_maker() as session:
