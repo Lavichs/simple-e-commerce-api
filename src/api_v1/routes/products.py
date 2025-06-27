@@ -51,3 +51,11 @@ async def update_product(
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
+
+@router.delete("/{id}", status_code=204)
+async def delete_product(
+        id: uuid.UUID,
+        product_service: Annotated[ProductsService, Depends(products_service)]
+):
+    await product_service.delete(id)
+

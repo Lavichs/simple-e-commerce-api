@@ -2,7 +2,6 @@ import urllib.parse
 import uuid
 
 import pytest
-from contextlib import nullcontext as does_not_raise
 from src.schemas.products import SProduct
 
 invalid_test_product_data = [
@@ -80,17 +79,9 @@ class TestProducts:
         response = client_sync.put(f"/api/v1/products/{uuid.uuid4()}?{urllib.parse.urlencode(product_data)}")
         assert response.status_code == 404
 
-# class TestPP:
-#     @pytest.mark.parametrize(
-#         "a, b, c, expectation",
-#         [
-#             (1, 2, 3, does_not_raise()),
-#             (3, 4, 7, does_not_raise()),
-#             (5, 6, 11, does_not_raise()),
-#             (7, 8, 15, does_not_raise()),
-#             (1, "1", 2, pytest.raises(TypeError))
-#         ]
-#     )
-#     def test_add(self, a, b, c, expectation):
-#         with expectation:
-#             assert a + b == c
+    def test_delete_product(self, client_sync, product):
+        response = client_sync.delete(f"/api/v1/products/{product.get('id')}")
+        assert response.status_code == 204
+        response = client_sync.delete(f"/api/v1/products/{product.get('id')}")
+        assert response.status_code == 204
+

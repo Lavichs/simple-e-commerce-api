@@ -31,4 +31,7 @@ class ProductsService:
         else:
             return is_product_update
 
+    async def delete(self, id: uuid.UUID):
+        await self.repository.delete(id)
+
 
