@@ -60,7 +60,7 @@ class SQLAlchemyRepository(AbstractRepository):
             result = await session.execute(stmt)
             await session.commit()
             print(result)
-            print(result.scalar_one_or_none())
+            # print(result.scalar_one_or_none())
             return result.rowcount > 0
 
     async def delete(self, id: uuid.UUID):

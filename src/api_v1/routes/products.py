@@ -34,8 +34,20 @@ async def get_all_products(
 async def get_product_by_id(
         id: uuid.UUID,
         product_service: Annotated[ProductsService, Depends(products_service)]
-) -> SProduct | None:
+) -> SProduct:
     product = await product_service.get_by_id(id)
     if product is None:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
+
+
+@router.put("/{id}")
+async def update_product(
+        id: uuid.UUID,
+        product: Annotated[SProductAdd, Depends()],
+        product_service: Annotated[ProductsService, Depends(products_service)]
+) -> SProduct:
+    product = await product_service.update(id, product)
+    if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
