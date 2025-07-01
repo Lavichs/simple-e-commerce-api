@@ -38,3 +38,19 @@ def products(client_sync):
         response = client_sync.post(f"/api/v1/products?{urllib.parse.urlencode(product)}")
         products.append(response.json())
     return products
+
+@pytest.fixture
+def product(client_sync):
+    with Session() as session:
+        stmt = delete(Product)
+        session.execute(stmt)
+        session.commit()
+    product_data ={
+            "title": "Product 1",
+            "description": "description",
+            "price": 100,
+            "stock_count": 100,
+        }
+    response = client_sync.post(f"/api/v1/products?{urllib.parse.urlencode(product_data)}")
+    product = response.json()
+    yield product

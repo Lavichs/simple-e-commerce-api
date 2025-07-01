@@ -23,3 +23,15 @@ class ProductsService:
         product = await self.repository.get_by_id(id)
         return product
 
+    async def update(self, id: uuid.UUID, product: SProductAdd) -> SProduct | bool:
+        product_dict = product.model_dump()
+        is_product_update = await self.repository.update(id, product_dict)
+        if is_product_update:
+            return await self.repository.get_by_id(id)
+        else:
+            return is_product_update
+
+    async def delete(self, id: uuid.UUID):
+        await self.repository.delete(id)
+
+
