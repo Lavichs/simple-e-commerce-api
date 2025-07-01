@@ -24,7 +24,7 @@ def setup():
         yield settings.DB_URL_ASYNC
     finally:
         pass
-        # drop_database(settings.DB_URL_SYNC)
+        drop_database(settings.DB_URL_SYNC)
         return
 
 
